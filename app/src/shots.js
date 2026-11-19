@@ -2,13 +2,14 @@
 // cover alone, filling the window. The scene is named by query parameters, all optional:
 //   photos   comma-separated sample names, placed into the panels in order (default: pier)
 //   template collage | triptych | hero        grade  vice | neon | teal | noir | none
+//   style    photo | gameart (the illustration treatment, combined with the grade)
 //   size     1080x1080 | 1080x1350 | 1920x1080 (the cover's export size)
 //   caption, tagline  the words on the cover    pos    top | bottom
 //   zoom     one zoom for every panel           zooms  comma-separated zooms, one per panel
 //   pans     semicolon-separated "x,y" focal points, one per panel — the shot scenes use these to keep
 //            every subject's head inside its panel instead of sliced by the frame edge
 // runShot builds the cover state; main.js applies it to the page and paints it.
-import { createCoverState, syncPanels, TEMPLATES, GRADES, SIZES } from './cover.js';
+import { createCoverState, syncPanels, TEMPLATES, GRADES, SIZES, STYLES } from './cover.js';
 
 export async function runShot(shot, query, loadImage) {
   if (shot === 'cover') document.body.classList.add('shot-cover');
@@ -22,6 +23,7 @@ export async function runShot(shot, query, loadImage) {
   const state = createCoverState();
   if (TEMPLATES[query.get('template')]) state.template = query.get('template');
   if (GRADES[query.get('grade')]) state.grade = query.get('grade');
+  if (STYLES[query.get('style')]) state.style = query.get('style');
   if (SIZES[query.get('size')]) state.size = query.get('size');
   if (query.get('caption') !== null) state.caption = query.get('caption');
   if (query.get('tagline') !== null) state.tagline = query.get('tagline');
