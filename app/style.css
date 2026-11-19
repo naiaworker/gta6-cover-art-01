@@ -1,7 +1,9 @@
-/* Neon Palms Cover Studio — editor chrome.
+/* Flamingo Bay Cover Studio — editor chrome.
    Tokens: --bg/--panel/--panel-2 dark zinc surfaces; --text/--text-2/--text-3 the only three text
    colours; --accent the one primary (hot pink); spacing from 4 8 12 16 24 32; radius 8 and 12.
-   Light comes from above: raised surfaces get a lighter top edge and a soft shadow below. */
+   Light comes from above: raised surfaces get a lighter top edge and a soft shadow below.
+   v2: the layout and style pickers carry seven and four choices, so segmented groups can wrap
+   (.segmented-wrap) and each button keeps a share of its row instead of overflowing the sidebar. */
 
 @font-face {
   font-family: "Anton";
@@ -125,6 +127,8 @@ button { font: inherit; cursor: pointer; }
 }
 .segmented-wide { display: flex; }
 .segmented-wide button { flex: 1; }
+.segmented-wrap { flex-wrap: wrap; }
+.segmented-wrap button { flex: 1 1 30%; }
 
 /* — Layout — */
 .app { display: flex; flex: 1; min-height: 0; }
