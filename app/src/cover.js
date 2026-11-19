@@ -48,28 +48,38 @@ export const TEMPLATES = {
 };
 
 /** Colour grades: a canvas filter applied to each photo as it is drawn, plus an overlay painted over the
- *  finished collage. `filter` strings are the ones Chrome's canvas accepts. */
+ *  finished collage. `filter` strings are the ones Chrome's canvas accepts. `vignette` is the strength of
+ *  the dark edge falloff painted last; `glow` is an optional second gradient composited in screen mode,
+ *  for the bloom of neon light. */
 export const GRADES = {
   vice: {
     label: 'Vice Sunset',
-    filter: 'saturate(1.35) contrast(1.06) brightness(1.03)',
+    filter: 'saturate(1.45) contrast(1.09) brightness(1.01)',
     overlay: [
-      [0, 'rgba(43, 16, 84, 0.30)'],
-      [0.38, 'rgba(43, 16, 84, 0)'],
-      [0.74, 'rgba(255, 94, 58, 0.16)'],
-      [1, 'rgba(216, 32, 110, 0.42)'],
+      [0, 'rgba(26, 8, 58, 0.46)'],
+      [0.36, 'rgba(26, 8, 58, 0)'],
+      [0.72, 'rgba(255, 94, 58, 0.24)'],
+      [1, 'rgba(216, 32, 110, 0.55)'],
     ],
     overlayMode: 'source-over',
+    vignette: 0.48,
   },
   neon: {
     label: 'Neon Nights',
-    filter: 'saturate(1.6) contrast(1.14) brightness(0.97)',
+    filter: 'saturate(1.9) contrast(1.24) brightness(0.74)',
     overlay: [
-      [0, 'rgba(0, 60, 90, 0.34)'],
-      [0.45, 'rgba(0, 0, 0, 0)'],
-      [1, 'rgba(255, 43, 150, 0.34)'],
+      [0, 'rgba(2, 0, 26, 0.60)'],
+      [0.35, 'rgba(0, 40, 70, 0.18)'],
+      [0.62, 'rgba(0, 229, 255, 0.10)'],
+      [1, 'rgba(255, 43, 150, 0.52)'],
     ],
     overlayMode: 'source-over',
+    glow: [
+      [0, 'rgba(0, 229, 255, 0.16)'],
+      [0.5, 'rgba(0, 0, 0, 0)'],
+      [1, 'rgba(255, 43, 150, 0.22)'],
+    ],
+    vignette: 0.58,
   },
   teal: {
     label: 'Teal & Orange',
@@ -80,6 +90,7 @@ export const GRADES = {
       [1, 'rgba(255, 122, 26, 0.26)'],
     ],
     overlayMode: 'source-over',
+    vignette: 0.3,
   },
   noir: {
     label: 'Noir B&W',
@@ -89,17 +100,24 @@ export const GRADES = {
       [1, 'rgba(0, 0, 0, 0.22)'],
     ],
     overlayMode: 'source-over',
+    vignette: 0.3,
   },
   none: {
     label: 'No grade',
     filter: 'none',
     overlay: [],
     overlayMode: 'source-over',
+    vignette: 0.3,
   },
 };
 
 /** Caption fill colours offered in the editor. */
 export const CAPTION_COLORS = ['#ffffff', '#ffd23f', '#ff5da2', '#3fd9ff', '#111114'];
+
+/** The default vertical focal point of a freshly placed photo. Faces usually sit in the upper part of a
+ *  photo, so the default crop is biased a little above centre: a centred crop of a portrait photo in a
+ *  wide panel would slice straight through the subject's head. */
+export const FOCAL_PAN_Y = 0.42;
 
 /** A fresh cover state: no photos yet, the collage template, the Vice Sunset grade. */
 export function createCoverState() {
@@ -136,7 +154,7 @@ export function syncPanels(state, photos) {
     if (old) {
       next.push(old);
     } else {
-      next.push({ photo: photos.length ? photos[i % photos.length] : null, zoom: 1, panX: 0.5, panY: 0.5 });
+      next.push({ photo: photos.length ? photos[i % photos.length] : null, zoom: 1, panX: 0.5, panY: FOCAL_PAN_Y });
     }
   }
   state.panels = next;
@@ -174,27 +192,30 @@ function drawPanelPhoto(ctx, panel, rect, filter) {
   const dw = img.naturalWidth * scale;
   const dh = img.naturalHeight * scale;
   const dx = rect.x + (rect.w - dw) * clamp01(panel.panX ?? 0.5);
-  const dy = rect.y + (rect.h - dh) * clamp01(panel.panY ?? 0.5);
+  const dy = rect.y + (rect.h - dh) * clamp01(panel.panY ?? FOCAL_PAN_Y);
   ctx.filter = filter;
   ctx.drawImage(img, dx, dy, dw, dh);
   ctx.filter = 'none';
   ctx.restore();
 }
 
-/** Paints the grade's overlay gradient and a vignette over the whole collage. */
+/** Paints the grade's overlay gradient, its optional glow, and a vignette over the whole collage. */
 function paintGradeOverlay(ctx, grade, w, h) {
-  if (grade.overlay.length) {
+  const paintStops = (stops, mode) => {
     const g = ctx.createLinearGradient(0, 0, 0, h);
-    for (const [stop, color] of grade.overlay) g.addColorStop(stop, color);
+    for (const [stop, color] of stops) g.addColorStop(stop, color);
     ctx.save();
-    ctx.globalCompositeOperation = grade.overlayMode;
+    ctx.globalCompositeOperation = mode;
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, w, h);
     ctx.restore();
-  }
+  };
+  if (grade.overlay.length) paintStops(grade.overlay, grade.overlayMode);
+  if (grade.glow) paintStops(grade.glow, 'screen');
+  const strength = grade.vignette ?? 0.3;
   const v = ctx.createRadialGradient(w / 2, h / 2, Math.min(w, h) * 0.42, w / 2, h / 2, Math.max(w, h) * 0.78);
   v.addColorStop(0, 'rgba(0, 0, 0, 0)');
-  v.addColorStop(1, 'rgba(0, 0, 0, 0.30)');
+  v.addColorStop(1, `rgba(0, 0, 0, ${strength})`);
   ctx.fillStyle = v;
   ctx.fillRect(0, 0, w, h);
 }
@@ -297,7 +318,7 @@ export function renderCover(ctx, state, w, h) {
   ctx.fillRect(0, 0, w, h);
   const key = Math.max(4, Math.round(w * 0.005)); // keyline half-width, from the one spacing scale
   rects.forEach((rect, i) => {
-    const panel = state.panels[i] ?? { photo: null, zoom: 1, panX: 0.5, panY: 0.5 };
+    const panel = state.panels[i] ?? { photo: null, zoom: 1, panX: 0.5, panY: FOCAL_PAN_Y };
     ctx.fillStyle = '#f7f4ec';
     ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
     const inner = {
