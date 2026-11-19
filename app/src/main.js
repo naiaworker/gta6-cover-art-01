@@ -1,4 +1,4 @@
-// Neon Palms Cover Studio — the editor.
+// Flamingo Bay Cover Studio — the editor.
 //
 // One cover state (src/cover.js) drives everything: the controls edit it, the canvas previews it at the
 // exact export size, and Export saves that canvas as a PNG. Photos live in a small library (the bundled
@@ -29,6 +29,16 @@ const SAMPLES = [
   { name: 'speedboat', label: 'Speedboat' },
   { name: 'neonstreet', label: 'Neon Street' },
   { name: 'marina', label: 'Marina' },
+  { name: 'palmsunset', label: 'Palms Sunset' },
+  { name: 'palmspurple', label: 'Purple Palms' },
+  { name: 'lifeguard', label: 'Lifeguard' },
+  { name: 'duskshore', label: 'Dusk Shore' },
+  { name: 'aerialcoast', label: 'Aerial Coast' },
+  { name: 'convertible', label: 'Convertible' },
+  { name: 'marinadusk', label: 'Marina Dusk' },
+  { name: 'neonrain', label: 'Neon Rain' },
+  { name: 'piergold', label: 'Golden Pier' },
+  { name: 'beachskyline', label: 'Beach Skyline' },
 ];
 
 /** Loads an image from a URL, resolving once it can be drawn. */
@@ -286,9 +296,9 @@ function exportPng() {
   canvas.toBlob((blob) => {
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = `neon-palms-cover-${state.size}.png`;
+    a.download = `flamingo-bay-cover-${state.size}.png`;
     a.click();
-    status.textContent = `Saved neon-palms-cover-${state.size}.png`;
+    status.textContent = `Saved flamingo-bay-cover-${state.size}.png`;
     redraw(true);
   }, 'image/png');
 }
