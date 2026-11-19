@@ -198,6 +198,13 @@ function wireControls() {
       redraw();
     });
   });
+  document.querySelectorAll('[data-style]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      state.style = btn.dataset.style;
+      setActive('[aria-label="Photo style"]', 'style', state.style);
+      redraw();
+    });
+  });
   document.querySelectorAll('[data-pos]').forEach((btn) => {
     btn.addEventListener('click', () => {
       state.captionPos = btn.dataset.pos;
@@ -360,6 +367,7 @@ function applyStateToControls() {
   document.getElementById('frame').checked = state.frame;
   setActive('.topbar-actions .segmented', 'size', state.size);
   setActive('[aria-label="Panel layout"]', 'template', state.template);
+  setActive('[aria-label="Photo style"]', 'style', state.style);
   setActive('[aria-label="Caption position"]', 'pos', state.captionPos);
   setActive('#grades', 'grade', state.grade);
   setActive('#captionColors', 'color', state.captionColor);
