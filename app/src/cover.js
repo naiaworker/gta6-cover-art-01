@@ -111,6 +111,14 @@ export const GRADES = {
   },
 };
 
+/** Photo styles: how each panel's photo is treated before the grade overlay goes over the collage.
+ *  `photo` leaves the photo as shot; `gameart` paints it into flat-shaded, ink-edged poster art
+ *  (see stylizeGameArt). A style combines with any colour grade. */
+export const STYLES = {
+  photo: { label: 'Photo' },
+  gameart: { label: 'Game Art' },
+};
+
 /** Caption fill colours offered in the editor. */
 export const CAPTION_COLORS = ['#ffffff', '#ffd23f', '#ff5da2', '#3fd9ff', '#111114'];
 
@@ -124,6 +132,7 @@ export function createCoverState() {
   return {
     template: 'collage',
     grade: 'vice',
+    style: 'photo',
     size: '1080x1080',
     caption: 'MIDNIGHT PALMS',
     tagline: 'NEON COAST STORIES',
@@ -197,6 +206,53 @@ function drawPanelPhoto(ctx, panel, rect, filter) {
   ctx.drawImage(img, dx, dy, dw, dh);
   ctx.filter = 'none';
   ctx.restore();
+}
+
+/** The Game Art treatment, painted over one panel's drawn photo: saturation is pushed, contrast is
+ *  reshaped, tones are posterized into flat cel bands (7 levels per channel), and a Sobel edge pass
+ *  darkens the contours — the inked-outline look of a game poster. Pure per-pixel arithmetic on the
+ *  panel's own pixels, so an export is deterministic and identical every run. */
+function stylizeGameArt(ctx, rect) {
+  const { x, y, w, h } = rect;
+  if (w < 3 || h < 3) return;
+  const img = ctx.getImageData(x, y, w, h);
+  const d = img.data;
+  const n = w * h;
+  const lum = new Float32Array(n);
+  for (let i = 0; i < n; i += 1) {
+    const o = i * 4;
+    lum[i] = (d[o] * 0.299 + d[o + 1] * 0.587 + d[o + 2] * 0.114) / 255;
+  }
+  const LEVELS = 7;
+  const SATURATION = 1.32;
+  const CONTRAST = 1.12;
+  for (let yy = 0; yy < h; yy += 1) {
+    for (let xx = 0; xx < w; xx += 1) {
+      const i = yy * w + xx;
+      const up = yy > 0 ? i - w : i;
+      const dn = yy < h - 1 ? i + w : i;
+      const lf = xx > 0 ? -1 : 0;
+      const rt = xx < w - 1 ? 1 : 0;
+      const gx = (lum[up + rt] + 2 * lum[i + rt] + lum[dn + rt])
+        - (lum[up + lf] + 2 * lum[i + lf] + lum[dn + lf]);
+      const gy = (lum[dn + lf] + 2 * lum[dn] + lum[dn + rt])
+        - (lum[up + lf] + 2 * lum[up] + lum[up + rt]);
+      const mag = Math.sqrt(gx * gx + gy * gy) / 4;
+      const edge = Math.min(0.85, Math.max(0, (mag - 0.08) * 1.8));
+      const keep = 1 - edge;
+      const o = i * 4;
+      const L = lum[i];
+      for (let c = 0; c < 3; c += 1) {
+        let v = d[o + c] / 255;
+        v = L + (v - L) * SATURATION;
+        v = (v - 0.5) * CONTRAST + 0.5;
+        v = Math.min(1, Math.max(0, v));
+        v = Math.round(v * (LEVELS - 1)) / (LEVELS - 1);
+        d[o + c] = v * keep * 255;
+      }
+    }
+  }
+  ctx.putImageData(img, x, y);
 }
 
 /** Paints the grade's overlay gradient, its optional glow, and a vignette over the whole collage. */
@@ -328,6 +384,7 @@ export function renderCover(ctx, state, w, h) {
       h: Math.max(1, rect.h - key * 2),
     };
     drawPanelPhoto(ctx, panel, inner, grade.filter);
+    if (state.style === 'gameart' && panel.photo) stylizeGameArt(ctx, inner);
   });
   paintGradeOverlay(ctx, grade, w, h);
   if (state.frame) {
