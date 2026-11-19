@@ -7,6 +7,7 @@
 **Neon Palms Cover Studio** turns your own photos into bold, sun-soaked video-game poster covers. Drop in one photo or several, arrange them across a multi-panel collage with white keylines, pick a colour grade (Vice Sunset, Neon Nights, Teal & Orange, Noir B&W), stamp on a big display caption in Anton with poster-style stroke and shadow, and export a finished PNG in one click — at 1080×1080, 1080×1350 or 1920×1080.
 
 - **Layouts:** classic 5-panel collage, triptych, and hero + strip.
+- **Photo or painted:** keep every photo photographic, or switch on Game Art — a per-pixel treatment that posterizes each photo into flat cel-shaded bands with dark inked edges, like a game poster — under any colour grade.
 - **Your photos, your call:** drag-and-drop or browse; one photo can fill every panel, or click panels to place photos one by one; drag to pan and scroll or slide to zoom each panel's crop.
 - **Lettering:** editable title and tagline, size and colour controls, top or bottom placement, optional frame line — all rendered into the exported PNG.
 - **Private and offline:** plain static files, no libraries, no uploads, no network requests. Photos never leave the machine. Six sample photos are bundled (five made with an image model, one very surprised cat) so a first cover takes seconds.
