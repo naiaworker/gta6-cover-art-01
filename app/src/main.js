@@ -8,6 +8,7 @@
 // A `?shot=` query builds a fixed scene instead (./shots.js), for screenshots.
 import {
   CAPTION_COLORS,
+  FOCAL_PAN_Y,
   GRADES,
   SIZES,
   TEMPLATES,
@@ -25,6 +26,9 @@ const SAMPLES = [
   { name: 'boulevard', label: 'Boulevard' },
   { name: 'pier', label: 'Pier' },
   { name: 'cat', label: 'Cat' },
+  { name: 'speedboat', label: 'Speedboat' },
+  { name: 'neonstreet', label: 'Neon Street' },
+  { name: 'marina', label: 'Marina' },
 ];
 
 /** Loads an image from a URL, resolving once it can be drawn. */
@@ -168,7 +172,7 @@ async function addFiles(files) {
       panel.photo = img;
       panel.zoom = 1;
       panel.panX = 0.5;
-      panel.panY = 0.5;
+      panel.panY = FOCAL_PAN_Y;
     }
   });
   renderThumbs();
@@ -230,7 +234,7 @@ function wireControls() {
     if (!panel) return;
     panel.zoom = 1;
     panel.panX = 0.5;
-    panel.panY = 0.5;
+    panel.panY = FOCAL_PAN_Y;
     redraw();
   });
   document.getElementById('fillAll').addEventListener('click', () => {
@@ -329,7 +333,7 @@ function wireCanvas() {
         panel.photo = img;
         panel.zoom = 1;
         panel.panX = 0.5;
-        panel.panY = 0.5;
+        panel.panY = FOCAL_PAN_Y;
       }
     }
     drag = null;
