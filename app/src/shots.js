@@ -1,8 +1,9 @@
 // Fixed scenes for screenshots: ?shot=editor shows the editor with a scene loaded; ?shot=cover shows the
 // cover alone, filling the window. The scene is named by query parameters, all optional:
 //   photos   comma-separated sample names, placed into the panels in order (default: pier)
-//   template collage | triptych | hero        grade  vice | neon | teal | noir | none
-//   style    photo | gameart (the illustration treatment, combined with the grade)
+//   template collage | triptych | hero | slant | medallion | cinematic | magazine
+//   grade    vice | neon | teal | noir | none
+//   style    photo | gameart | heatwave | duskfilm (the photo treatment, combined with the grade)
 //   size     1080x1080 | 1080x1350 | 1920x1080 (the cover's export size)
 //   caption, tagline  the words on the cover    pos    top | bottom
 //   zoom     one zoom for every panel           zooms  comma-separated zooms, one per panel
