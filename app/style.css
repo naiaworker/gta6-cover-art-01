@@ -1,0 +1,251 @@
+/* Neon Palms Cover Studio — editor chrome.
+   Tokens: --bg/--panel/--panel-2 dark zinc surfaces; --text/--text-2/--text-3 the only three text
+   colours; --accent the one primary (hot pink); spacing from 4 8 12 16 24 32; radius 8 and 12.
+   Light comes from above: raised surfaces get a lighter top edge and a soft shadow below. */
+
+@font-face {
+  font-family: "Anton";
+  src: url("./fonts/Anton-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("./fonts/PlusJakartaSans-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("./fonts/PlusJakartaSans-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("./fonts/PlusJakartaSans-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-display: swap;
+}
+
+:root {
+  --bg: #101014;
+  --panel: #17181d;
+  --panel-2: #1f2026;
+  --line: #2b2d34;
+  --text: #f4f1ea;
+  --text-2: #a9abb4;
+  --text-3: #6f7178;
+  --accent: #ff2e7e;
+  --accent-deep: #d61f68;
+  --sunset: #ff8a3d;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.45 "Plus Jakarta Sans", system-ui, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+/* — Top bar — */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 12px 24px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+.brand { display: flex; align-items: baseline; gap: 8px; }
+.brand-mark {
+  align-self: center;
+  width: 22px; height: 22px;
+  border-radius: 6px;
+  background: linear-gradient(160deg, var(--sunset) 0%, var(--accent) 70%);
+  box-shadow: 0 2px 8px rgba(255, 46, 126, 0.45);
+}
+.brand-name { font-family: "Anton", sans-serif; font-size: 20px; letter-spacing: 0.06em; }
+.brand-sub { color: var(--text-2); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
+.topbar-actions { display: flex; align-items: center; gap: 12px; }
+
+/* — Buttons — */
+button { font: inherit; cursor: pointer; }
+.primary {
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 800;
+  color: #fff;
+  background: linear-gradient(180deg, var(--accent) 0%, var(--accent-deep) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 4px 14px rgba(255, 46, 126, 0.35);
+}
+.primary:hover { filter: brightness(1.07); }
+.primary:active { transform: translateY(1px); }
+.ghost {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 12px;
+  background: var(--panel-2);
+  color: var(--text-2);
+  font-weight: 600;
+}
+.ghost:hover { color: var(--text); border-color: var(--text-3); }
+
+.segmented {
+  display: inline-flex;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 2px;
+  gap: 2px;
+}
+.segmented button {
+  border: 0;
+  background: transparent;
+  color: var(--text-2);
+  font-weight: 600;
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.segmented button:hover { color: var(--text); }
+.segmented button.is-active {
+  background: #2e3038;
+  color: var(--text);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+.segmented-wide { display: flex; }
+.segmented-wide button { flex: 1; }
+
+/* — Layout — */
+.app { display: flex; flex: 1; min-height: 0; }
+.controls {
+  width: 308px;
+  flex: none;
+  overflow-y: auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  background: var(--panel);
+  border-right: 1px solid var(--line);
+}
+.group { display: flex; flex-direction: column; gap: 12px; }
+.group-label {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+.hint { margin: 0; font-size: 12px; color: var(--text-3); }
+.field { display: flex; flex-direction: column; gap: 6px; font-weight: 600; font-size: 13px; color: var(--text-2); }
+.field input[type="text"] {
+  font: inherit;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 9px 12px;
+}
+.field input[type="text"]:focus { outline: 2px solid var(--accent); outline-offset: 0; border-color: transparent; }
+input[type="range"] { width: 100%; accent-color: var(--accent); }
+.check { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--text-2); }
+.check input { accent-color: var(--accent); width: 16px; height: 16px; }
+.row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+
+/* — Photos — */
+.dropzone {
+  border: 1.5px dashed #3a3d45;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  background: var(--panel-2);
+  cursor: pointer;
+}
+.dropzone:hover, .dropzone:focus-visible { border-color: var(--accent); outline: none; }
+.dropzone.is-dragging { border-color: var(--accent); background: #26202b; }
+.dropzone-title { margin: 0; font-weight: 800; }
+.dropzone-sub { margin: 4px 0 0; font-size: 12px; color: var(--text-3); }
+.thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.thumb {
+  position: relative;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  padding: 0;
+  overflow: hidden;
+  background: none;
+  aspect-ratio: 1;
+}
+.thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.thumb.is-picked { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(255, 46, 126, 0.35); }
+.thumb .thumb-name {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.04em;
+  color: #fff; background: rgba(10, 10, 12, 0.62); padding: 2px 4px;
+  text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* — Grades & swatches — */
+.grades { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.grade {
+  display: flex; align-items: center; gap: 8px;
+  border: 1px solid var(--line); border-radius: 8px;
+  background: var(--panel-2); color: var(--text-2);
+  padding: 8px; font-weight: 600; font-size: 13px; text-align: left;
+}
+.grade:hover { color: var(--text); }
+.grade.is-active { border-color: var(--accent); color: var(--text); }
+.grade-chip { width: 26px; height: 26px; border-radius: 6px; flex: none; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18); }
+.swatches { display: flex; gap: 8px; }
+.swatch {
+  width: 24px; height: 24px; border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.25); padding: 0;
+}
+.swatch.is-active { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(255, 46, 126, 0.4); }
+
+/* — Stage — */
+.stage {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 32px;
+  background:
+    radial-gradient(900px 500px at 70% 0%, rgba(255, 138, 61, 0.07), transparent 60%),
+    radial-gradient(800px 600px at 20% 100%, rgba(255, 46, 126, 0.06), transparent 60%),
+    var(--bg);
+}
+#cover {
+  max-width: 100%;
+  max-height: calc(100vh - 190px);
+  width: auto;
+  height: auto;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6), 0 4px 18px rgba(0, 0, 0, 0.5);
+  cursor: grab;
+  touch-action: none;
+}
+#cover:active { cursor: grabbing; }
+.status { margin: 0; min-height: 20px; color: var(--text-2); font-size: 13px; font-weight: 600; }
+.panel-info { margin: 0; font-weight: 700; }
+
+/* — Shot modes (screenshots): cover fills the window; editor is the plain page — */
+body.shot-cover { display: block; }
+body.shot-cover .topbar, body.shot-cover .controls, body.shot-cover .status { display: none; }
+body.shot-cover .app { display: block; height: 100vh; }
+body.shot-cover .stage { padding: 0; height: 100vh; background: #000; }
+body.shot-cover #cover { width: 100vw; height: 100vh; max-width: none; max-height: none; box-shadow: none; cursor: default; }
