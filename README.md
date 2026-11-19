@@ -9,7 +9,7 @@
 - **Layouts:** classic 5-panel collage, triptych, and hero + strip.
 - **Your photos, your call:** drag-and-drop or browse; one photo can fill every panel, or click panels to place photos one by one; drag to pan and scroll or slide to zoom each panel's crop.
 - **Lettering:** editable title and tagline, size and colour controls, top or bottom placement, optional frame line — all rendered into the exported PNG.
-- **Private and offline:** plain static files, no libraries, no uploads, no network requests. Photos never leave the machine. Three sample photos are bundled (two made for make.fun with an image model, one very surprised cat) so a first cover takes seconds.
+- **Private and offline:** plain static files, no libraries, no uploads, no network requests. Photos never leave the machine. Six sample photos are bundled (five made with an image model, one very surprised cat) so a first cover takes seconds.
 
 ## Run it
 
