@@ -1,6 +1,6 @@
 <!doctype html>
 <!--
-  Neon Palms Cover Studio — editor page.
+  Flamingo Bay Cover Studio — editor page.
   Design brief (Refactoring UI, Workflow B): content ranking decided before markup —
   PRIMARY: the cover preview (the product) and the one primary action, Export PNG.
   SECONDARY: photos, layout, grade. TERTIARY: caption tuning, panel fine-tuning.
@@ -11,20 +11,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Neon Palms Cover Studio</title>
+<title>Flamingo Bay Cover Studio</title>
 <link rel="stylesheet" href="./style.css">
 </head>
 <body>
 <header class="topbar">
   <div class="brand">
     <span class="brand-mark" aria-hidden="true"></span>
-    <span class="brand-name">NEON PALMS</span>
+    <span class="brand-name">FLAMINGO BAY</span>
     <span class="brand-sub">Cover Studio</span>
   </div>
   <div class="topbar-actions">
     <div class="segmented" role="group" aria-label="Export size">
-      <button type="button" data-size="1080x1080" class="is-active">1080 × 1080</button>
-      <button type="button" data-size="1080x1350">1080 × 1350</button>
+      <button type="button" data-size="1080x1080">1080 × 1080</button>
+      <button type="button" data-size="1080x1350" class="is-active">1080 × 1350</button>
       <button type="button" data-size="1920x1080">1920 × 1080</button>
     </div>
     <button id="export" type="button" class="primary">Export PNG</button>
@@ -42,25 +42,32 @@
       <input id="fileInput" type="file" accept="image/*" multiple hidden>
       <div id="thumbs" class="thumbs" aria-label="Your photos"></div>
       <button id="fillAll" type="button" class="ghost">Fill every panel with the picked photo</button>
-      <p class="hint">Pick a photo, then click a panel on the cover to place it there.</p>
+      <p class="hint">Pick a photo, then click a panel on the cover to place it there. Sixteen samples are bundled — real coast photography (see CREDITS.md) plus the original set.</p>
     </section>
 
     <section class="group">
       <h2 class="group-label">Layout</h2>
-      <div class="segmented segmented-wide" role="group" aria-label="Panel layout">
+      <div class="segmented segmented-wide segmented-wrap" role="group" aria-label="Panel layout">
         <button type="button" data-template="collage" class="is-active">Collage ×5</button>
         <button type="button" data-template="triptych">Triptych</button>
         <button type="button" data-template="hero">Hero + strip</button>
+        <button type="button" data-template="slant">Slant duo</button>
+        <button type="button" data-template="medallion">Medallion</button>
+        <button type="button" data-template="cinematic">Cinematic</button>
+        <button type="button" data-template="magazine">Magazine rail</button>
       </div>
+      <p class="hint">Slant duo cuts the top pair on a diagonal; Medallion sets a round hero in the middle; Cinematic leads with a wide band; Magazine rail runs one tall photo down the side.</p>
     </section>
 
     <section class="group">
       <h2 class="group-label">Style</h2>
-      <div class="segmented segmented-wide" role="group" aria-label="Photo style">
+      <div class="segmented segmented-wide segmented-wrap" role="group" aria-label="Photo style">
         <button type="button" data-style="photo" class="is-active">Photo</button>
         <button type="button" data-style="gameart">Game Art</button>
+        <button type="button" data-style="heatwave">Heatwave</button>
+        <button type="button" data-style="duskfilm">Dusk Film</button>
       </div>
-      <p class="hint">Game Art paints each photo into flat-shaded poster art with inked edges, under any colour grade.</p>
+      <p class="hint">Game Art paints each photo into flat-shaded poster art with inked edges. Heatwave prints it as poster ink — hot duotone, halftone dots, ink outlines. Dusk Film is a warm fade with lifted blacks and fine grain. All combine with any colour grade.</p>
     </section>
 
     <section class="group">
@@ -71,10 +78,10 @@
     <section class="group">
       <h2 class="group-label">Caption</h2>
       <label class="field">Title
-        <input id="caption" type="text" maxlength="42" value="MIDNIGHT PALMS" autocomplete="off">
+        <input id="caption" type="text" maxlength="42" value="FLAMINGO BAY" autocomplete="off">
       </label>
       <label class="field">Tagline
-        <input id="tagline" type="text" maxlength="48" value="NEON COAST STORIES" autocomplete="off">
+        <input id="tagline" type="text" maxlength="48" value="VICE COAST STORIES" autocomplete="off">
       </label>
       <label class="field">Title size
         <input id="captionSize" type="range" min="60" max="150" value="100">
@@ -101,7 +108,7 @@
   </aside>
 
   <section class="stage">
-    <canvas id="cover" width="1080" height="1080" aria-label="Your cover, live preview"></canvas>
+    <canvas id="cover" width="1080" height="1350" aria-label="Your cover, live preview"></canvas>
     <p id="status" class="status" role="status"></p>
   </section>
 </main>
